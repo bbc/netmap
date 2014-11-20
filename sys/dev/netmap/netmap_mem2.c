@@ -70,7 +70,7 @@ MALLOC_DEFINE(M_NETMAP, "netmap", "Network memory map");
 #ifdef _WIN32_USE_SMALL_GENERIC_DEVICES_MEMORY
 #define NETMAP_BUF_MAX_NUM  8*4096      /* if too big takes too much time to allocate */
 #else
-#define NETMAP_BUF_MAX_NUM 20*4096*2	/* large machine */
+#define NETMAP_BUF_MAX_NUM	30*4096*2	 /* SRG: increased from 20* to 30*, to support ixgbe + 8 client pipes */
 #endif
 
 #define NETMAP_POOL_MAX_NAMSZ	32
@@ -534,7 +534,7 @@ struct netmap_mem_d nm_mem = {	/* Our memory allocator. */
 		[NETMAP_RING_POOL] = {
 			.name 	= "netmap_ring",
 			.objminsize = sizeof(struct netmap_ring),
-			.objmaxsize = 32*PAGE_SIZE,
+			.objmaxsize = 36*PAGE_SIZE,
 			.nummin     = 2,
 			.nummax	    = 1024,
 		},
@@ -553,7 +553,7 @@ struct netmap_mem_d nm_mem = {	/* Our memory allocator. */
 			.num  = 100,
 		},
 		[NETMAP_RING_POOL] = {
-			.size = 9*PAGE_SIZE,
+			.size = 36*PAGE_SIZE,   /* SRG: increased from 9 to 36 for 8K rings */
 			.num  = 200,
 		},
 		[NETMAP_BUF_POOL] = {
